@@ -11,7 +11,12 @@ class Luncher
       next if path == '.' || path == '..'
       require path
     end
-    Engine::Producer.new_link.run
+    # Engine::Producer.new_link.run
+    pool = Engine::Producer.pool
+    schedule = Engine::Schedule.new
+    cache = Engine::Cache.new
+    schedule.push Engine::ParseStruct.new(parser: 'organization_list', link: 'https://www.itjuzi.com/investfirm', namespace: 'itjuzi')
+    4.times { |_index| pool.future.run(schedule, cache) }
   end
 
   def recover(actor, reason)
@@ -19,4 +24,4 @@ class Luncher
   end
 end
 
-Luncher.new.start
+# Luncher.new.start

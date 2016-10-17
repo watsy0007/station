@@ -1,6 +1,7 @@
 require 'active_support/core_ext/module/delegation'
 module Engine
   class Schedule
+    include Celluloid
     attr_accessor :queues
     def initialize
       @queues = []
@@ -14,6 +15,7 @@ module Engine
       @queues.shift
     end
 
+    alias_method :<<, :push
     delegate :empty?, to: :queues
   end
 end

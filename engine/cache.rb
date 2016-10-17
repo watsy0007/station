@@ -1,6 +1,7 @@
 require 'active_support/core_ext/module/delegation'
 module Engine
   class Cache
+    include Celluloid
     attr_accessor :caches
     def initialize
       @caches = {}
