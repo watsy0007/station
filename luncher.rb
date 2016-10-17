@@ -7,16 +7,15 @@ class Luncher
   trap_exit :recover
 
   def start
-    Dir['./parser/**/*.rb'].each do |path|
-      next if path == '.' || path == '..'
-      require path
-    end
-    # Engine::Producer.new_link.run
-    pool = Engine::Producer.pool
+    Dir['./parser/**/*.rb'].each { |p| require p }
     schedule = Engine::Schedule.new
     cache = Engine::Cache.new
     schedule.push Engine::ParseStruct.new(parser: 'organization_list', link: 'https://www.itjuzi.com/investfirm', namespace: 'itjuzi')
-    4.times { |_index| pool.future.run(schedule, cache) }
+    10.times do |_index|
+      supervisor = Engine::Producer.pool args: [schedule, cache]
+      supervisor.async.start
+    end
+    sleep(1_000_000_000)
   end
 
   def recover(actor, reason)
@@ -24,4 +23,4 @@ class Luncher
   end
 end
 
-# Luncher.new.start
+Luncher.new.start

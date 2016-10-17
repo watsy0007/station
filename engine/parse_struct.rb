@@ -1,7 +1,8 @@
 require 'ostruct'
-
 module Engine
   class ParseStruct
+    extend Forwardable
+
     attr_accessor :parse
 
     def initialize(opts = {})
@@ -18,10 +19,6 @@ module Engine
       path.camelize.constantize
     end
 
-    def [](item)
-        @parse[item]
-    end
-
-    delegate :namespace, :parser, :link, to: :parse
+    def_delegators :@parse, :namespace, :parser, :link, :[]
   end
 end

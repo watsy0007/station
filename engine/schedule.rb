@@ -1,21 +1,16 @@
-require 'active_support/core_ext/module/delegation'
 module Engine
   class Schedule
-    include Celluloid
+    extend Forwardable
+
     attr_accessor :queues
     def initialize
-      @queues = []
+      @queues = Queue.new
     end
 
-    def push(item)
-      @queues << item
+    def inspect
+      "<Engine::Schedule queue =#{queues} >"
     end
 
-    def pop
-      @queues.shift
-    end
-
-    alias_method :<<, :push
-    delegate :empty?, to: :queues
+    def_delegators :@queues, :<<, :push, :empty?, :pop
   end
 end

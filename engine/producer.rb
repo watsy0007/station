@@ -1,25 +1,19 @@
 module Engine
   class Producer
     include Celluloid
-    attr_accessor :scheduce
-    def initialize(scheduce = Schedule.new, cache = Cache.new)
-      # @scheduce = scheduce
-      # @cache = cache
-      # @scheduce.push ParseStruct.new(parser: 'organization_list', link: 'https://www.itjuzi.com/investfirm', namespace: 'itjuzi')
+    attr_accessor :schedule, :cache
+
+    def initialize(schedule, cache)
+      @schedule = schedule
+      @cache = cache
     end
 
-    def run(scheduce, cache)
-      @scheduce = scheduce
-      @cache = cache
+    def start
       loop do
-        if @scheduce.future.empty?.value
-          puts 'empty'
-          sleep(2)
-          next
-        end
-        item = @scheduce.future.pop.value
-        next if parsed?(item)
-        puts "start parse #{item.link}"
+        next sleep(1) if @schedule.empty?
+        item = @schedule.pop
+        next sleep(1) if item.nil? || parsed?(item)
+        puts "start parse #{item.link} #{self}"
         data = item.parse_class.new.crawl(item.link)
         cache(item, data)
         data = parse_link(data, item.namespace)
@@ -32,18 +26,18 @@ module Engine
       return puts "#{data} is empty" if data.nil?
       links = ->(data, namespace) do
         next if data['link'].blank? || parsed?(data)
-        @scheduce.future.push ParseStruct.new(parser: data['parser'], link: data['link'], namespace: namespace)
+        @schedule.push ParseStruct.new(parser: data['parser'], link: data['link'], namespace: namespace)
       end
       ['pages', 'details'].each { |field| data.delete(field)&.map { |page| links.call(page, namespace) } }
       data
     end
 
     def parsed?(data)
-      @cache.future.include?(data['link']).value
+      @cache.include?(data['link'])
     end
 
     def cache(item, data)
-      @cache.future[item['link']] = data
+      @cache[item['link']] = data
     end
   end
 end

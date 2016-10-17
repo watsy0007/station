@@ -1,3 +1,16 @@
+GIT
+  remote: git://github.com/celluloid/celluloid.git
+  revision: 0d192022ffff8e46722771b4865bfce4114b00a3
+  submodules: true
+  specs:
+    celluloid (0.17.4)
+      celluloid-essentials
+      celluloid-extras
+      celluloid-fsm
+      celluloid-pool
+      celluloid-supervision
+      timers (>= 4.1.1)
+
 PATH
   remote: /Users/watsy/Documents/code/github/wombat
   specs:
@@ -15,13 +28,6 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     byebug (9.0.6)
-    celluloid (0.17.3)
-      celluloid-essentials
-      celluloid-extras
-      celluloid-fsm
-      celluloid-pool
-      celluloid-supervision
-      timers (>= 4.1.1)
     celluloid-essentials (0.20.5)
       timers (>= 4.1.1)
     celluloid-extras (0.20.5)
@@ -95,7 +101,7 @@ PLATFORMS
 DEPENDENCIES
   activesupport
   byebug
-  celluloid
+  celluloid!
   rake
   watir
   wombat!

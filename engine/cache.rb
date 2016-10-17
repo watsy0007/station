@@ -1,20 +1,17 @@
-require 'active_support/core_ext/module/delegation'
 module Engine
   class Cache
-    include Celluloid
+    extend Forwardable
+    # include Celluloid
+
     attr_accessor :caches
     def initialize
       @caches = {}
     end
 
-    def []=(key, value)
-      @caches[key] = value
-    end
-
-    delegate :include?, to: :caches
+    def_delegators :@caches, :[]=, :[], :include?
 
     def inspect
-      puts @caches.keys
+      "<Engine::Cache #{@caches.keys} >"
     end
   end
 end
