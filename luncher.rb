@@ -10,7 +10,9 @@ class Luncher
     Dir['./parser/**/*.rb'].each { |p| require p }
     schedule = Engine::Schedule.new
     cache = Engine::Cache.new
-    schedule.push Engine::ParseStruct.new(parser: 'organization_list', link: 'https://www.itjuzi.com/investfirm', namespace: 'itjuzi')
+    # schedule.push Engine::ParseStruct.new(parser: 'organization_list', link: 'https://www.itjuzi.com/investfirm', namespace: 'itjuzi')
+    parse = Engine::ParseStruct.new(parser: 'tech', link: 'http://t66y.com/thread0806.php?fid=7', namespace: 't66y')
+    schedule.push parse
     10.times do |_index|
       supervisor = Engine::Producer.pool args: [schedule, cache]
       supervisor.async.start
