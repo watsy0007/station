@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'bundler'
 require 'byebug'
+require 'monitor'
 require 'forwardable'
 require 'celluloid/debug'
 require 'celluloid/current'

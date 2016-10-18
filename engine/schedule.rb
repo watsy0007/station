@@ -1,16 +1,23 @@
 module Engine
-  class Schedule
-    extend Forwardable
-
-    attr_accessor :queues
-    def initialize
-      @queues = Queue.new
-    end
+  class Schedule < Queue
+    include ::MonitorMixin
 
     def inspect
-      "<Engine::Schedule queue =#{queues} >"
+      "<Engine::Schedule queue.size =#{size} >"
     end
 
-    def_delegators :@queues, :<<, :push, :empty?, :pop
+    alias_method :ori_push, :push
+    alias_method :ori_pop, :pop
+    def push(item)
+      synchronize do
+        ori_push(item)
+      end
+    end
+
+    def pop
+      synchronize do
+        ori_pop
+      end
+    end
   end
 end

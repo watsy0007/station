@@ -10,12 +10,12 @@ module Engine
 
     def start
       loop do
-        next sleep(1) if @schedule.empty?
+        next sleep(0.2) if @schedule.empty?
         item = @schedule.pop
-        next sleep(1) if item.nil? || parsed?(item)
-        puts "start parse #{item.link} #{self}"
-        data = item.parse_class.new.crawl(item.link)
-        cache(item, data)
+        next sleep(0.2) if item.nil? || parsed?(item)
+        Logger.debug "start parse #{item.link}"
+        data = cache(item) { item.parse_class.new.crawl(item.link) }
+        next if data.empty?
         data = parse_link(data, item.namespace)
         next if data.empty?
         item.item_class.new.save(item.link, data)
@@ -23,7 +23,6 @@ module Engine
     end
 
     def parse_link(data, namespace)
-      return puts "#{data} is empty" if data.nil?
       links = ->(data, namespace) do
         next if data['link'].blank? || parsed?(data)
         @schedule.push ParseStruct.new(parser: data['parser'], link: data['link'], namespace: namespace)
@@ -36,8 +35,11 @@ module Engine
       @cache.include?(data['link'])
     end
 
-    def cache(item, data)
+    def cache(item, data = 'parsing')
       @cache[item['link']] = data
+      data = yield if block_given?
+      @cache[item['link']] = data
+      data
     end
   end
 end
