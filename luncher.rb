@@ -1,25 +1,32 @@
 require './station'
-require 'wombat'
 require 'active_support/core_ext'
 # documents
 class Luncher
   include Celluloid
   trap_exit :recover
 
+  def load_config
+    Dir['parser/**/*.rb'].each { |p| require_relative p }
+  end
+
   def start
-    Dir['./parser/**/*.rb'].each { |p| require p }
+    load_config
     schedule = Engine::Schedule.new
     cache = Engine::Cache.new
-    schedule.push Engine::ParseStruct.new(parser: 'organization_list', link: 'https://www.itjuzi.com/investfirm', namespace: 'itjuzi')
+    schedule.push Engine::ParseStruct.new(
+      parser: 'organization_list',
+      link: 'https://www.itjuzi.com/investfirm',
+      namespace: 'itjuzi'
+    )
 
     Engine::Logger.logger = Logger.new(STDERR).tap do |logger|
       logger.level = Logger::DEBUG
     end
-    10.times do |_index|
+    5.times do |_index|
       supervisor = Engine::Producer.pool args: [schedule, cache]
       supervisor.async.start
     end
-    sleep(1_000_000_000)
+    loop { sleep(1_000_000) }
   end
 
   def recover(actor, reason)

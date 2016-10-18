@@ -1,0 +1,10 @@
+default: &default
+  adapter: 'mysql2'
+  host: <%= ENV['ITJUZI_DB_HOST'] || '0.0.0.0' %>
+  port: <%= ENV['ITJUZI_DB_PORT'] || '33060' %>
+  username: <%= ENV['ITJUZI_DB_USERNAME'] || 'root' %>
+  password: <%= ENV['ITJUZI_DB_PASSWORD'] || 'my-secret-pw' %>
+  database: <%= ENV['ITJUZI_DB_DATABASE'] || 'station_default' %>
+development:
+  <<: *default
+  database: <%= ENV['ITJUZI_DB_DATABASE'] || 'station_development' %>

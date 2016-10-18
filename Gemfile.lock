@@ -11,22 +11,21 @@ GIT
       celluloid-supervision
       timers (>= 4.1.1)
 
-PATH
-  remote: /Users/watsy/Documents/code/github/wombat
-  specs:
-    wombat (2.5.1)
-      activesupport
-      mechanize
-      rest-client
-
 GEM
   remote: https://rubygems.org/
   specs:
+    activemodel (5.0.0.1)
+      activesupport (= 5.0.0.1)
+    activerecord (5.0.0.1)
+      activemodel (= 5.0.0.1)
+      activesupport (= 5.0.0.1)
+      arel (~> 7.0)
     activesupport (5.0.0.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (~> 0.7)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
+    arel (7.1.4)
     byebug (9.0.6)
     celluloid-essentials (0.20.5)
       timers (>= 4.1.1)
@@ -63,6 +62,7 @@ GEM
     mime-types-data (3.2016.0521)
     mini_portile2 (2.1.0)
     minitest (5.9.1)
+    mysql2 (0.4.4)
     net-http-digest_auth (1.4)
     net-http-persistent (2.9.4)
     netrc (0.11.0)
@@ -94,17 +94,23 @@ GEM
       selenium-webdriver (>= 2.46.2)
     webrobots (0.1.2)
     websocket (1.2.3)
+    wombat (2.5.1)
+      activesupport
+      mechanize
+      rest-client
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  activerecord
   activesupport
   byebug
   celluloid!
+  mysql2
   rake
   watir
-  wombat!
+  wombat
 
 BUNDLED WITH
    1.13.4
