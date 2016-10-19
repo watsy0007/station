@@ -10,14 +10,19 @@ install ruby
 install bundler
 #+END_SRC
 
-## 2. init
+## 2. configure
+
+config/database.yml
+config/initializers/*.rb
+
+## 3. init
 #+BEGIN_SRC shell
-bundle update
-rake create_all
-rake migrate_all
+bundle install
+rake db:create_all
+rake db:migrate_all
 #+END_SRC
 
-## 3. run
+## 4. run
 
 #+BEGIN_SRC shell
 rake 
