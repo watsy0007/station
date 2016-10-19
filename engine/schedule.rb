@@ -8,6 +8,7 @@ module Engine
 
     alias_method :ori_push, :push
     alias_method :ori_pop, :pop
+
     def push(item)
       synchronize do
         ori_push(item)
