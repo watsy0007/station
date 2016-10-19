@@ -7,11 +7,17 @@ module Engine
     end
 
     def self.database_config
-      parse = name.to_s.split('::').first.downcase
-      path = "./parser/#{parse}/config/database.yml"
+      module_name = name.to_s.split('::').first.downcase
+      path = database_path(module_name)
       result = ERB.new(IO.read(path)).result
       config = YAML.load(result).deep_symbolize_keys!.freeze
       config[Engine.env.to_sym]
+    end
+
+    def self.database_path(module_name)
+      path = "#{Engine.root}/parser/#{module_name}/config/database.yml"
+      path = "#{Engine.root}/config/database.yml" unless File.exist?(path)
+      path
     end
 
   end
