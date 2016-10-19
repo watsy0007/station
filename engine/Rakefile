@@ -1,0 +1,41 @@
+require 'yaml'
+require 'erb'
+
+namespace :db do
+  def module_path(module_name)
+    "#{Engine.root}/parser/#{module_name}"
+  end
+
+  def database_path(module_name)
+    path = "#{module_path(module_name)}/config/database.yml"
+    path = "#{Engine.root}/config/database.yml" unless File.exist?(path)
+    path
+  end
+
+  def database_config(module_name)
+    result = ERB.new(IO.read(database_path(module_name))).result
+    YAML.load(result).deep_symbolize_keys!.freeze[Engine.env.to_sym]
+  end
+
+  desc 'db:create[module_name]'
+  task :create, [:module_name] => :environment do |_t, args|
+    config = database_config(args[:module_name])
+    ActiveRecord::Base.logger = Engine.logger
+    ActiveRecord::Base.establish_connection config.merge(database: nil)
+    ActiveRecord::Base.connection.create_database config[:database]
+  end
+
+  desc 'db:migrate[module_name]'
+  task :migrate, [:module_name] => :environment do |_t, args|
+    version = ENV['VERSION']
+    path = "#{module_path(args[:module_name])}/db/migrate"
+    ActiveRecord::Migrator.migrate(path, version ? version.to_i : nil)
+  end
+
+  task :environment, [:module_name] do |t, args|
+    raise 'please set module name' if args[:module_name].nil?
+    config = database_config(args[:module_name])
+    ActiveRecord::Base.logger = Engine.logger
+    ActiveRecord::Base.establish_connection config
+  end
+end
