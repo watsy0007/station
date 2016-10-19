@@ -1,4 +1,4 @@
-module Engine
+module Station
   class Producer
     include Celluloid
     attr_accessor :schedule, :cache

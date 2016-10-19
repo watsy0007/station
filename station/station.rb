@@ -1,5 +1,5 @@
 require 'logger'
-module Engine
+module Station
   module_function
 
   attr_accessor :_env
@@ -16,10 +16,10 @@ module Engine
 
   def logger
     @_logger ||= begin
-                   Engine::Logger.logger = ::Logger.new(STDERR).tap do |l|
+                   Station::Logger.logger = ::Logger.new(STDERR).tap do |l|
                      l.level = ::Logger::DEBUG
                    end
-                   Engine::Logger.logger
+                   Station::Logger.logger
                  end
   end
 
@@ -28,7 +28,7 @@ module Engine
   end
 
   def cache
-    @_cache ||= Engine::MemoryCache.new
+    @_cache ||= Station::MemoryCache.new
   end
 
   def cache=(item)
@@ -36,7 +36,7 @@ module Engine
   end
 
   def schedule
-    @_schedule ||= Engine::MemorySchedule.new
+    @_schedule ||= Station::MemorySchedule.new
   end
 
   def schedule=(item)

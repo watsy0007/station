@@ -1,5 +1,5 @@
 require_relative '../schedule'
-module Engine
+module Station
   class MemorySchedule < Schedule
     attr_accessor :queue
 

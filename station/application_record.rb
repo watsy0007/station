@@ -1,4 +1,4 @@
-module Engine
+module Station
   class ApplicationRecord < ActiveRecord::Base
     self.abstract_class = true
 
@@ -11,12 +11,12 @@ module Engine
       path = database_path(module_name)
       result = ERB.new(IO.read(path)).result
       config = YAML.load(result).deep_symbolize_keys!.freeze
-      config[Engine.env.to_sym]
+      config[Station.env.to_sym]
     end
 
     def self.database_path(module_name)
-      path = "#{Engine.root}/parser/#{module_name}/config/database.yml"
-      path = "#{Engine.root}/config/database.yml" unless File.exist?(path)
+      path = "#{Station.root}/parser/#{module_name}/config/database.yml"
+      path = "#{Station.root}/config/database.yml" unless File.exist?(path)
       path
     end
 

@@ -1,5 +1,5 @@
 require 'logger'
-module Engine
+module Station
   class Logger
     class << self
       attr_accessor :logger

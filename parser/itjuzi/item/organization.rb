@@ -9,7 +9,7 @@ module Itjuzi
         datas = Model::Organization.attribute_names.each_with_object({}) do |item, acc|
           acc[item.to_s] = data[item.to_s] if data[item.to_s]
         end
-        ::Engine::Logger.debug(datas)
+        ::Station::Logger.debug(datas)
         return Model::Organization.new(datas).save if org.nil?
         return if org.updated_at > 7.days.ago
         org.update(datas)

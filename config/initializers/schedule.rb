@@ -1,6 +1,6 @@
-Engine.configuration do |e|
-  e.schedule = Engine::MemorySchedule.new
-  e.schedule.push Engine::ParseStruct.new(
+Station.configuration do |e|
+  e.schedule = Station::MemorySchedule.new
+  e.schedule.push Station::ParseStruct.new(
     parser: 'organization_list',
     link: 'https://www.itjuzi.com/investfirm',
     namespace: 'itjuzi'

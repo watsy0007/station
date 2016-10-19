@@ -1,6 +1,6 @@
 module Itjuzi
   module Model
-    class Organization < ::Engine::ApplicationRecord
+    class Organization < ::Station::ApplicationRecord
       establish_connection database_config
     end
   end

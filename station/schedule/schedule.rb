@@ -1,8 +1,8 @@
 require 'monitor'
-module Engine
+module Station
   class Schedule < BasicObject
     def inspect
-      '<Engine::Schedule queue.size abstract >'
+      '<Station::Schedule queue.size abstract >'
     end
 
     def push(_item)

@@ -8,5 +8,5 @@ require 'celluloid/current'
 require 'active_record'
 require 'wombat'
 Bundler.setup(:default)
-Dir['engine/**/*.rb'].each { |f| require_relative f }
+Dir['station/**/*.rb'].each { |f| require_relative f }
 Celluloid.boot

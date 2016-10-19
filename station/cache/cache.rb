@@ -1,4 +1,4 @@
-module Engine
+module Station
   class Cache < BasicObject
     def []=(key, value)
     end
@@ -10,7 +10,7 @@ module Engine
     end
 
     def inspect
-      "<Engine::Cache abstract>"
+      "<Station::Cache abstract>"
     end
   end
 end

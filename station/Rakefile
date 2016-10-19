@@ -1,26 +1,28 @@
 require 'yaml'
 require 'erb'
 
+Dir["#{Station.root}/parser/*/tasks/**/*.rake"].each { |f| load f }
+
 namespace :db do
   def module_path(module_name)
-    "#{Engine.root}/parser/#{module_name}"
+    "#{Station.root}/parser/#{module_name}"
   end
 
   def database_path(module_name)
     path = "#{module_path(module_name)}/config/database.yml"
-    path = "#{Engine.root}/config/database.yml" unless File.exist?(path)
+    path = "#{Station.root}/config/database.yml" unless File.exist?(path)
     path
   end
 
   def database_config(module_name)
     result = ERB.new(IO.read(database_path(module_name))).result
-    YAML.load(result).deep_symbolize_keys!.freeze[Engine.env.to_sym]
+    YAML.load(result).deep_symbolize_keys!.freeze[Station.env.to_sym]
   end
 
   desc 'db:create[module_name]'
   task :create, [:module_name] => :environment do |_t, args|
     config = database_config(args[:module_name])
-    ActiveRecord::Base.logger = Engine.logger
+    ActiveRecord::Base.logger = Station.logger
     ActiveRecord::Base.establish_connection config.merge(database: nil)
     ActiveRecord::Base.connection.create_database config[:database]
   end
@@ -35,7 +37,35 @@ namespace :db do
   task :environment, [:module_name] do |t, args|
     raise 'please set module name' if args[:module_name].nil?
     config = database_config(args[:module_name])
-    ActiveRecord::Base.logger = Engine.logger
+    ActiveRecord::Base.logger = Station.logger
     ActiveRecord::Base.establish_connection config
   end
 end
+
+task :launch do
+  Station::Launcher.new.start
+end
+
+desc 'show module list'
+task :module_list do
+  Dir['parser/*'].each { |dir| puts dir.split('/').last }
+end
+
+def db_operation(operator)
+  Dir['parser/*'].each do |dir|
+    module_name = dir.split('/').last
+    Rake::Task["db:#{operator}"].invoke(module_name)
+  end
+end
+
+desc 'create all module database'
+task :create_all do
+  db_operation(:create)
+end
+
+desc 'migrate all module database'
+task :migrate_all do
+  db_operation(:migrate)
+end
+
+task default: %w(launch)

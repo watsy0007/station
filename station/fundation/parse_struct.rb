@@ -1,5 +1,5 @@
 require 'ostruct'
-module Engine
+module Station
   class ParseStruct
     extend Forwardable
 
