@@ -5,10 +5,10 @@
 
 ** 1. install environment
 
-*+BEGIN_SRC shell
+#+BEGIN_SRC shell
 install ruby
 install bundler
-*+END_SRC
+#+END_SRC
 
 ** 2. configure
 
@@ -16,14 +16,14 @@ config/database.yml
 config/initializers/*.rb
 
 ** 3. init
-*+BEGIN_SRC shell
+#+BEGIN_SRC shell
 bundle install
 rake db:create_all
 rake db:migrate_all
-*+END_SRC
+#+END_SRC
 
 ** 4. run
 
-*+BEGIN_SRC shell
+#+BEGIN_SRC shell
 rake 
-*+END_SRC
+#+END_SRC
