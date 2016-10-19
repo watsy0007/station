@@ -1,3 +1,4 @@
+require_relative './station'
 module Station
   class ApplicationRecord < ActiveRecord::Base
     self.abstract_class = true

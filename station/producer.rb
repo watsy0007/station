@@ -15,6 +15,7 @@ module Station
         next sleep(0.2) if item.nil? || parsed?(item)
         Logger.debug "start parse #{item.link}"
         data = cache(item) { item.parse_class.new.crawl(item.link) }
+        @schedule.done(item)
         next if data.empty?
         data = parse_link(data, item.namespace)
         next if data.empty?

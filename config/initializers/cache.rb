@@ -1,3 +1,3 @@
 Station.configuration do |e|
-  e.cache = Station::MemoryCache.new
+  # e.cache = Station::MemoryCache.new
 end

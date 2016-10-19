@@ -12,5 +12,9 @@ module Station
     def pop
       raise ''
     end
+
+    def done(_item)
+      raise ''
+    end
   end
 end

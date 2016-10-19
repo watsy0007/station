@@ -20,7 +20,7 @@ module Station
       load_config
       Station.logger.debug('engine launching ...')
 
-      5.times do
+      1.times do
         supervisor = Station::Producer.pool args: [Station.schedule, Station.cache]
         supervisor.async.start
       end
