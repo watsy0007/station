@@ -1,0 +1,24 @@
+# Station
+驿站爬虫系统
+
+# development
+
+## 1. install environment
+
+#+BEGIN_SRC shell
+install ruby
+install bundler
+#+END_SRC
+
+## 2. init
+#+BEGIN_SRC shell
+bundle update
+rake create_all
+rake migrate_all
+#+END_SRC
+
+## 3. run
+
+#+BEGIN_SRC shell
+rake 
+#+END_SRC
