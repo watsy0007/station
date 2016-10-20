@@ -13,6 +13,7 @@ install bundler
 ** 2. configure
 
 config/database.yml
+
 config/initializers/*.rb
 
 ** 3. init
