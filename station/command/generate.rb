@@ -1,5 +1,6 @@
 require 'thor'
 require 'erb'
+require 'fileutils'
 module Station
   module Command
     class Generate < Thor # :nodoc:
@@ -9,19 +10,33 @@ module Station
         parser = args.shift
         file_name = args.shift
         file_path = dest_path(parser, file_name)
-        class_name = file_name.camelize
-        path = template_filepath('migration')
-        data = render IO.read(path), class_name: class_name
         File.open(file_path, 'w') do |f|
-          puts "create file #{file_path}"
-          f.write data
+          logs "create file #{file_path}"
+          path = template_filepath('migration')
+          f.write render(IO.read(path), class_name: file_name.camelize)
         end
-        puts 'done'
+        logs 'done'
       rescue Errno::ENOENT => e
         puts "#{e.message} \n#{e.backtrace[0..5].join("\n")}"
       end
 
+      desc 'create parser module', ''
+      def parser(args)
+        raise "#{args} error" unless args.is_a?(Array)
+        parser = args.shift
+        logs "create #{parser} parser"
+        path = "#{Station.root}/parser/#{parser}"
+        %w(config db db/migrate item model parser task).each do |nest_path|
+          FileUtils.mkdir_p "#{path}/#{nest_path}"
+        end
+        logs 'done'
+      end
+
       protected
+
+      def logs(msg)
+        Station.logger.debug msg
+      end
 
       def render(template, vars)
         ERB.new(template).result(OpenStruct.new(vars).instance_eval { binding })
