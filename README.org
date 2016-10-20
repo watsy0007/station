@@ -26,10 +26,16 @@ rake db:create_all
 ** 4. new module
 
 #+BEGIN_SRC shell
-bundle exec bin/station g parser itjuzi
+bundle exec bin/station g module itjuzi
 #+END_SRC
 
-** 5. new model
+** 5. new parser
+
+#+BEGIN_SRC shell
+bundle exec bin/station g parser itjuzi sector
+#+END_SRC
+
+** 6. new model
 
 #+BEGIN_SRC shell
 bundle exec bin/station g migration itjuzi create_sectors
@@ -37,13 +43,13 @@ bundle exec bin/station g migration itjuzi create_sectors
 
 update configuration
 
-** 6. migrate
+** 7. migrate
    
 #+BEGIN_SRC shell
 rake db:migrate_all
 #+END_SRC
 
-** 7. run
+** 8. run
 
 #+BEGIN_SRC shell
 rake 

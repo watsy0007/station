@@ -7,9 +7,9 @@ module Station
       desc 'generation migration', ''
       def migration(args)
         raise "#{args} error" unless args.is_a?(Array) || args.size < 2
-        parser = args.shift
+        module_name = args.shift
         file_name = args.shift
-        file_path = dest_path(parser, file_name)
+        file_path = dest_path(module_name, file_name)
         File.open(file_path, 'w') do |f|
           logs "create file #{file_path}"
           path = template_filepath('migration')
@@ -21,18 +21,30 @@ module Station
       end
 
       desc 'create parser module', ''
-      def parser(args)
+      def new_module(args)
         raise "#{args} error" unless args.is_a?(Array)
-        parser = args.shift
-        path = "#{Station.root}/parser/#{parser}"
-        return logs("#{parser} parser exist!") if File.exist?(path)
-        logs "create #{parser} parser"
+        module_name = args.shift
+        m_path = module_path(module_name)
+        return logs("#{module_name} parser exist!") if File.exist?(m_path)
+        logs "create #{module_name} module"
         %w(config db/migrate item model parser task).each do |nest_path|
-          dir_path = "#{path}/#{nest_path}"
+          dir_path = "#{m_path}/#{nest_path}"
           FileUtils.mkdir_p dir_path
           File.new("#{dir_path}/.gitkeep", 'w')
         end
         logs 'done'
+      end
+
+      desc 'create parser', ''
+      def parser(args)
+        raise "#{args} error" unless args.is_a?(Array)
+        module_name = args.shift
+        parser = args.shift
+        logs "create #{module_name} parser : #{parser}"
+        File.open(parser_path(module_name, parser), 'w+') do |f|
+          template = IO.read(template_filepath('parser'))
+          f.write render(template, {module_class_name: module_name.camelize, class_name: parser.camelize})
+        end
       end
 
       protected
@@ -49,15 +61,24 @@ module Station
         "#{Station.root}/station/generators/templates/#{method}.erb"
       end
 
+      def module_path(module_name)
+        "#{Station.root}/parser/#{module_name}"
+      end
+
       def dest_path(module_name, file_name)
-        module_path = "#{Station.root}/parser/#{module_name}"
-        raise "#{module_path} not exist" unless File.exist?(module_path)
-        migrate_path = "#{module_path}/db/migrate"
-        unless File.exist?(migrate_path)
-          raise "#{migrate_path} not exist"
-        end
-        ms = Time.now.to_f.to_s.gsub('.', '')
+        m_path = module_path(module_name)
+        raise "module: #{module_name} not exist" unless Dir.exist?(m_path)
+        migrate_path = "#{m_path}/db/migrate"
+        raise "#{migrate_path} not exist" unless Dir.exist?(migrate_path)
+        ms = Time.now.to_f.to_s.delete('.')
         "#{migrate_path}/#{ms}_#{file_name}.rb"
+      end
+
+      def parser_path(module_name, file_name)
+        m_path = module_path(module_name)
+        puts m_path
+        raise "module: #{module_name} not exist" unless Dir.exist?(m_path)
+        "#{m_path}/parser/#{file_name}.rb"
       end
     end
   end
