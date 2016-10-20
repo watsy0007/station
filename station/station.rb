@@ -43,4 +43,17 @@ module Station
   def schedule=(item)
     @_schedule = item
   end
+
+  def init
+    %w(application_record command launcher logger producer station utils).each do |f|
+      require "#{Station.root}/station/#{f}"
+    end
+    %w(cache command db fundation generators lib model schedule).each do |dir|
+      Dir["#{Station.root}/station/#{dir}/**/*.rb"].each do |file|
+        require file
+      end
+    end
+  end
 end
+
+Station.init

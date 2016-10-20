@@ -1,7 +1,6 @@
 require 'active_support/core_ext'
 module Station
-  # document
-  class Launcher
+  class Launcher # :nodoc:
     include Celluloid
     trap_exit :recover
 

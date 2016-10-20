@@ -3,6 +3,7 @@ require 'erb'
 
 Dir["#{Station.root}/station/lib/tasks/*.rake"].each { |f| load f }
 Dir["#{Station.root}/parser/*/tasks/**/*.rake"].each { |f| load f }
+Dir["#{Station.root}/lib/tasks/*.rake"].each { |f| require_relative f }
 
 namespace :db do
   def db_operation(operator)
