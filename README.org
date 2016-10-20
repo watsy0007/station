@@ -17,14 +17,29 @@ config/database.yml
 config/initializers/*.rb
 
 ** 3. init
+
 #+BEGIN_SRC shell
 bundle install
 rake db:create_all
+#+END_SRC
+
+** 4. new model
+
+#+BEGIN_SRC shell
+bundle exec bin/station g migration itjuzi create_sectors
+#+END_SRC
+
+update configuration
+
+** 5. migrate
+   
+#+BEGIN_SRC shell
 rake db:migrate_all
 #+END_SRC
 
-** 4. run
+** 6. run
 
 #+BEGIN_SRC shell
 rake 
 #+END_SRC
+
