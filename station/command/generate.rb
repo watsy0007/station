@@ -27,8 +27,10 @@ module Station
         path = "#{Station.root}/parser/#{parser}"
         return logs("#{parser} parser exist!") if File.exist?(path)
         logs "create #{parser} parser"
-        %w(config db db/migrate item model parser task).each do |nest_path|
-          FileUtils.mkdir_p "#{path}/#{nest_path}"
+        %w(config db/migrate item model parser task).each do |nest_path|
+          dir_path = "#{path}/#{nest_path}"
+          FileUtils.mkdir_p dir_path
+          File.new("#{dir_path}/.gitkeep", 'w')
         end
         logs 'done'
       end
