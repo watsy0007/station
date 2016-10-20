@@ -24,8 +24,9 @@ module Station
       def parser(args)
         raise "#{args} error" unless args.is_a?(Array)
         parser = args.shift
-        logs "create #{parser} parser"
         path = "#{Station.root}/parser/#{parser}"
+        return logs("#{parser} parser exist!") if File.exist?(path)
+        logs "create #{parser} parser"
         %w(config db db/migrate item model parser task).each do |nest_path|
           FileUtils.mkdir_p "#{path}/#{nest_path}"
         end
