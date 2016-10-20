@@ -1,5 +1,4 @@
 require 'logger'
-require_relative './logger'
 module Station
   module_function
 
