@@ -4,6 +4,8 @@ module <%= module_class_name %>
       include Wombat::Crawler
 
       # title xpath: '//div[@class=\'title\']'
+      # title css: 'div.title'
+      # image_links xpath: '//div[@class=\'images\']/img/@src'
     end
   end
 end
