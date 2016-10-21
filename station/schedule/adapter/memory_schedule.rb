@@ -1,4 +1,5 @@
 require_relative '../schedule'
+require 'monitor'
 module Station
   class MemorySchedule < Schedule
     attr_accessor :queue
@@ -32,7 +33,7 @@ module Station
     def failed(_item)
     end
 
-    def inspect?
+    def inspect
       "#{self.class} #{self} size: #{@queue.size}"
     end
   end

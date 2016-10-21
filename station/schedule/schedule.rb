@@ -1,4 +1,3 @@
-require 'monitor'
 module Station
   class Schedule < BasicObject
     def inspect

@@ -5,6 +5,7 @@ module Station
   attr_accessor :_env
   attr_accessor :_logger
   attr_accessor :_schedule, :_cache
+  attr_accessor :_thread_count
 
   def configuration
     yield self if block_given?
@@ -27,6 +28,14 @@ module Station
     File.expand_path('.')
   end
 
+  def thread_count
+    @_thread_count ||= 1
+  end
+
+  def thread_count=(count)
+    @_thread_count = count
+  end
+
   def cache
     @_cache ||= Station::MemoryCache.new
   end
@@ -39,6 +48,10 @@ module Station
     @_schedule ||= Station::MemorySchedule.new
   end
 
+  def proxies
+    @_proxies ||= Station::Proxies.new
+  end
+
   def schedule=(item)
     @_schedule = item
   end
@@ -47,7 +60,7 @@ module Station
     %w(application_record command launcher logger producer station utils).each do |f|
       require "#{Station.root}/station/#{f}"
     end
-    %w(cache command db fundation generators lib model schedule).each do |dir|
+    %w(cache command db fundation generators lib model proxy schedule).each do |dir|
       Dir["#{Station.root}/station/#{dir}/**/*.rb"].each do |file|
         require file
       end

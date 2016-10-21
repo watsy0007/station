@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: git://github.com/watsy0007/wombat.git
-  revision: 0d694ff18f14133553bf86cb18dede903483e72c
+  revision: 4548b665299397fb9a6199b84aabc539cad3878d
   specs:
     wombat (2.5.1)
       activesupport

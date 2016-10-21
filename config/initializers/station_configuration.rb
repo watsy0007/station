@@ -6,6 +6,7 @@ Station.configuration do |e|
   #   link: 'https://www.itjuzi.com/investfirm',
   #   namespace: 'itjuzi'
   # )
+  # e.cache = Station::MemoryCache.new
 
   # comment below
   e.schedule = Station::DbSchedule.new

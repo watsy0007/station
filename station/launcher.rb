@@ -19,8 +19,8 @@ module Station
       load_config
       Station.logger.debug('engine launching ...')
 
-      1.times do
-        supervisor = Station::Producer.pool args: [Station.schedule, Station.cache]
+      Station.thread_count.times do
+        supervisor = Station::Producer.pool args: [Station.schedule, Station.cache, Station.proxies]
         supervisor.async.start
       end
       loop { sleep(1_000_000) }

@@ -10,6 +10,8 @@ install ruby
 install bundler
 #+END_SRC
 
+[[https://ruby-china.org/wiki/rvm-guide][rvm guide]]
+
 ** 2. configure
 
 config/database.yml
