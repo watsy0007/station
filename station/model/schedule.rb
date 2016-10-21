@@ -2,7 +2,7 @@ module Station
   module Model
     class Schedule < ::Station::ApplicationRecord
       establish_connection database_config
-      enum status: [:waiting, :progressing, :done]
+      enum status: [:waiting, :progressing, :done, :failed]
 
       default_scope -> { order(id: :desc) }
 

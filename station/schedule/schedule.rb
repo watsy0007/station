@@ -16,5 +16,9 @@ module Station
     def done(_item)
       raise ''
     end
+
+    def failed(_item)
+      raise ''
+    end
   end
 end

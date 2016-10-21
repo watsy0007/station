@@ -29,6 +29,9 @@ module Station
     def done(_item)
     end
 
+    def failed(_item)
+    end
+
     def inspect?
       "#{self.class} #{self} size: #{@queue.size}"
     end

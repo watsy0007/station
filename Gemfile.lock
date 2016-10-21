@@ -11,6 +11,15 @@ GIT
       celluloid-supervision
       timers (>= 4.1.1)
 
+GIT
+  remote: git://github.com/watsy0007/wombat.git
+  revision: 0d694ff18f14133553bf86cb18dede903483e72c
+  specs:
+    wombat (2.5.1)
+      activesupport
+      mechanize
+      rest-client
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -95,10 +104,6 @@ GEM
       selenium-webdriver (>= 2.46.2)
     webrobots (0.1.2)
     websocket (1.2.3)
-    wombat (2.5.1)
-      activesupport
-      mechanize
-      rest-client
 
 PLATFORMS
   ruby
@@ -112,7 +117,7 @@ DEPENDENCIES
   rake
   thor
   watir
-  wombat
+  wombat!
 
 BUNDLED WITH
    1.13.4

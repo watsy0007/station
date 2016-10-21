@@ -14,8 +14,13 @@ module Station
         item = @schedule.pop
         next sleep(0.2) if item.nil? || parsed?(item)
         Logger.debug "start parse #{item.link}"
-        data = cache(item) { item.parse_class.new.crawl(item.link) }
-        @schedule.done(item)
+        begin
+          data = cache(item) { item.parse_class.new.crawl(item.link) }
+          @schedule.done(item)
+        rescue Exception => e
+          Station.logger.error("%s: %s\n%s" % [item.link, e.message, e.backtrace[0..5].join("\n")])
+          @schedule.failed(item)
+        end
         next if data.empty?
         data = parse_link(data, item.namespace)
         next if data.empty?

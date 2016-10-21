@@ -32,6 +32,13 @@ module Station
       end
     end
 
+    def failed(item)
+      ::Station::Model::Schedule.transaction do
+        model = ::Station::Model::Schedule.find_by(id: item.id)
+        model.failed! unless item.nil?
+      end
+    end
+
     def inspect?
       "#{self.class} #{self} size: #{@queue.size}"
     end
